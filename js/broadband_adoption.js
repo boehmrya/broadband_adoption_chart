@@ -20,10 +20,11 @@ jQuery(function($){
     $(window).on('load scroll resize', function() {
       var throttled = false;
       var delay = 250;
-      var w = window.innerWidth;
 
       // only run if we're not throttled
       if (!throttled) {
+        var w = window.innerWidth;
+
         // Desktop
         if (w > 767) {
           if (!$('.adoption-chart svg.desktop').length && isInViewport(adoptChartEl)) {
@@ -109,7 +110,6 @@ jQuery(function($){
         .orient("left");
 
     initialArea = d3.svg.area()
-        //.x(function(d) { return x(d.year); })
         .x(0)
         .y0(height)
         .y1(height);
@@ -126,14 +126,12 @@ jQuery(function($){
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-
     // Take each row and put the date column through the parsedate form we've defined above.
     data.forEach(function(d) {
       d.year = parseDate(d.year);
     });
 
     x.domain(d3.extent(data, function(d) { return d.year; }));
-    //y.domain(d3.extent(data, function(d) { return d.percent; }));
     y.domain([0,100]);
 
     svg.append("g")
@@ -158,15 +156,15 @@ jQuery(function($){
         .attr("class", "axis-label")
         .style("text-anchor", "end")
         .text("Percentage of Households");
-    svg.append("path")
-        .datum(data)
-        .attr("class", "area")
-        .attr("fill", "#E71B4F")
-        .attr("d", initialArea) // initial state (line at the bottom)
-        .transition()
-        .duration(2000)
-        .ease("linear")
-        .attr("d", area);
+      svg.append("path")
+          .datum(data)
+          .attr("class", "area")
+          .attr("fill", "#E71B4F")
+          .attr("d", initialArea) // initial state (line at the bottom)
+          .transition()
+          .duration(2000)
+          .ease("linear")
+          .attr("d", area);
   }
 
 
