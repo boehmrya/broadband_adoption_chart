@@ -4,7 +4,8 @@ jQuery(function($){
   buildChart();
 
   function buildChart() {
-    var adoptChart = false;
+    var adoptChartMobile = false;
+    var adoptChartDesktop = false;
     var adoptChartEl = $('.adoption-chart');
 
     // check if element is in the viewport
@@ -16,15 +17,29 @@ jQuery(function($){
       return elementBottom > viewportTop && elementTop < viewportBottom;
     };
 
-    $(window).on('load scroll', function() {
+    $(window).on('load scroll resize', function() {
       var throttled = false;
       var delay = 250;
+      var w = window.innerWidth;
 
       // only run if we're not throttled
       if (!throttled) {
-        if (!adoptChart && isInViewport(adoptChartEl)) {
-          adoptionChart();
-          adoptChart = true;
+        // Desktop
+        if (w > 767) {
+          if (!$('.adoption-chart svg.desktop').length && isInViewport(adoptChartEl)) {
+            if ($('.adoption-chart svg').length) {
+              removeAdoptChart();
+            }
+            adoptionChart(w);
+          }
+        }
+        else { // Mobile
+          if (!$('.adoption-chart svg.mobile').length && isInViewport(adoptChartEl)) {
+            if ($('.adoption-chart svg').length) {
+              removeAdoptChart();
+            }
+            adoptionChart(w);
+          }
         }
 
         // we're throttled!
@@ -38,11 +53,15 @@ jQuery(function($){
     });
   }
 
+  function removeAdoptChart() {
+    $('.adoption-chart svg').remove();
+  }
+
 
   // broadband adoption chart
-  function adoptionChart() {
-    var data, margin, width, height, viewBox, parseDate, x, y,
-        tickLabels, xAxis, yAxis, initialArea, area, svg;
+  function adoptionChart(w) {
+    var data, margin, width, outerWidth, height, outerHeight, viewBox, parseDate,
+        x, y, tickLabels, xAxis, yAxis, initialArea, area, svg, wrapClass;
 
     // broadband adoption data
     data = [{"year":"2000", "percent": 3},
@@ -51,11 +70,21 @@ jQuery(function($){
             {"year":"2015", "percent": 68},
             {"year":"2020", "percent": 81}];
 
+    outerWidth = 1140;
+    if (w > 767) {
+      outerHeight = 500;
+      wrapClass = 'desktop';
+    }
+    else {
+      outerHeight = 700;
+      wrapClass = 'mobile';
+    }
+
     // dimensions
     margin = {top: 20, right: 20, bottom: 80, left: 80};
-    width = 1140 - margin.left - margin.right;
-    height = 500 - margin.top - margin.bottom;
-    viewBox = "0 0 1140 500";
+    width = outerWidth - margin.left - margin.right;
+    height = outerHeight - margin.top - margin.bottom;
+    viewBox = "0 0 " + outerWidth + " " + outerHeight;
 
     parseDate = d3.time.format("%Y").parse;
 
@@ -93,6 +122,7 @@ jQuery(function($){
     svg = d3.select(".adoption-chart").append("svg")
         .attr("preserveAspectRatio", "xMinYMin meet")
         .attr("viewBox", viewBox)
+        .attr("class", wrapClass)
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
