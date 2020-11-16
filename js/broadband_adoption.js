@@ -107,6 +107,9 @@ jQuery(function($){
         .scale(y)
         .innerTickSize(-width)
         .outerTickSize(0)
+        .tickFormat(function(d,i){
+          return d + "%";
+        })
         .orient("left");
 
     initialArea = d3.svg.area()

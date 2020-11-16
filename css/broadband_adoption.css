@@ -131,6 +131,10 @@ h2.story-title {
   display: inline;
 }
 
+.adoption-chart .y.axis path {
+  stroke: #fff;
+}
+
 .adoption-chart .y.axis .tick text {
   transform: translate(-5px, 0px);
 }
@@ -148,8 +152,7 @@ h2.story-title {
 }
 
 .adoption-chart .y.axis .tick line {
-  opacity: 0.2;
-  stroke-dasharray: 3 3;
+  opacity: 0.1;
 }
 
 .axis-label {
@@ -183,9 +186,7 @@ h2.section-title {
 }
 
 .chart-key {
-  text-align: center;
-  max-width: 180px;
-  margin: 0 auto;
+  margin-bottom: 20px;
 }
 
 .key-block {
