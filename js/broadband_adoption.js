@@ -82,7 +82,7 @@ jQuery(function($){
     }
 
     // dimensions
-    margin = {top: 20, right: 20, bottom: 80, left: 80};
+    margin = {top: 20, right: 20, bottom: 40, left: 40};
     width = outerWidth - margin.left - margin.right;
     height = outerHeight - margin.top - margin.bottom;
     viewBox = "0 0 " + outerWidth + " " + outerHeight;
@@ -137,25 +137,10 @@ jQuery(function($){
     svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
-        .call(xAxis)
-      .append("text")
-        .attr("y", 60)
-        .attr("x", 540)
-        .attr("dy", ".71em")
-        .attr("class", "axis-label")
-        .style("text-anchor", "end")
-        .text("Year");
+        .call(xAxis);
     svg.append("g")
         .attr("class", "y axis")
-        .call(yAxis)
-      .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", -80)
-        .attr("x", 0)
-        .attr("dy", ".71em")
-        .attr("class", "axis-label")
-        .style("text-anchor", "end")
-        .text("Percentage of Households");
+        .call(yAxis);
       svg.append("path")
           .datum(data)
           .attr("class", "area")
